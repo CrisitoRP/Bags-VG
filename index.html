@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bags VG</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+  :root {
+    --pink-bg: #fff5f8;
+    --pink-soft: #fce4ec;
+    --pink-medium: #f8bbd0;
+    --pink-accent: #ec407a;
+    --pink-dark: #c2185b;
+    --black: #1a1a1a;
+    --gray: #6b6b6b;
+    --gold: #d4af7a;
+    --white: #ffffff;
+    --shadow-soft: 0 4px 20px rgba(236, 64, 122, 0.08);
+    --shadow-medium: 0 8px 30px rgba(236, 64, 122, 0.15);
+    --shadow-strong: 0 15px 40px rgba(236, 64, 122, 0.25);
+  }
+
+  html, body { overflow-x: hidden; }
+
+  body {
+    background: var(--pink-bg);
+    color: var(--black);
+    min-height: 100vh;
+    position: relative;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(248, 187, 208, 0.35) 0%, transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(252, 228, 236, 0.5) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(255, 245, 248, 0.3) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ============ PARTÍCULAS FLOTANTES ============ */
+  .particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    font-size: 18px;
+    opacity: 0;
+    animation: floatUp linear infinite;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(100vh) rotate(0deg) scale(0.5);
+      opacity: 0;
+    }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% {
+      transform: translateY(-10vh) rotate(360deg) scale(1);
+      opacity: 0;
+    }
+  }
+
+  .sparkle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8), 0 0 12px 4px rgba(236, 64, 122, 0.4);
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* ============ HEADER ============ */
+  header {
+    background: linear-gradient(135deg, #ffffff 0%, var(--pink-soft) 100%);
+    color: var(--black);
+    padding: 1.1rem 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: var(--shadow-soft);
+    border-bottom: 1px solid rgba(248, 187, 208, 0.4);
+    backdrop-filter: blur(10px);
+  }
+
+  header h1 {
+    font-size: 1.4rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--black) 0%, var(--pink-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 0.5rem;
+    animation: gentleFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes gentleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  header .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+
+  /* ============ BANNER ============ */
+  .banner {
+    background: linear-gradient(90deg, #fce4ec 0%, #f8bbd0 50%, #fce4ec 100%);
+    background-size: 200% 100%;
+    animation: bannerShine 8s ease-in-out infinite;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    position: sticky;
+    top: 62px;
+    z-index: 99;
+    box-shadow: 0 4px 14px rgba(236, 64, 122, 0.15);
+    border-bottom: 1px solid rgba(236, 64, 122, 0.2);
+    overflow: hidden;
+  }
+
+  @keyframes bannerShine {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .banner-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--pink-dark);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+    position: relative;
+    z-index: 2;
+    animation: bannerPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes bannerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  .banner-text .star {
+    font-size: 1rem;
+    animation: starTwinkle 2s ease-in-out infinite;
+  }
+
+  .banner-text .star:nth-child(1) { animation-delay: 0s; }
+  .banner-text .star:nth-child(2) { animation-delay: 0.5s; }
+  .banner-text .star:nth-child(3) { animation-delay: 1s; }
+  .banner-text .star:nth-child(4) { animation-delay: 1.5s; }
+
+  @keyframes starTwinkle {
+    0%, 100% { opacity: 0.5; transform: scale(0.9) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.3) rotate(180deg); }
+  }
+
+  /* Destello que recorre el banner */
+  .banner::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.7) 50%,
+      transparent 100%);
+    animation: bannerSweep 4s ease-in-out infinite;
+    z-index: 1;
+  }
+
+  @keyframes bannerSweep {
+    0% { left: -100%; }
+    50%, 100% { left: 100%; }
+  }
+
+  /* ============ BOTONES ============ */
+  .btn {
+    background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-dark) 100%);
+    color: white; border: none; padding: 0.65rem 1.3rem;
+    border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(236, 64, 122, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+
+  .btn:hover::before { transform: translateX(100%); }
+
+  .btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 20px rgba(236, 64, 122, 0.4);
+  }
+
+  .btn:active { transform: translateY(0) scale(0.98); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+  }
+  .btn-danger:hover { box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4); }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    box-shadow: 0 4px 12px rgba(107, 114, 128, 0.2);
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-dark) 100%);
+    box-shadow: 0 4px 12px rgba(236, 64, 122, 0.3);
+  }
+
+  .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; position: relative; z-index: 5; }
+
+  /* ============ GRID ============ */
+  .grid {
+    display: grid; gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
+  /* ============ TARJETAS ============ */
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex; flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(248, 187, 208, 0.3);
+    animation: cardFadeIn 0.5s ease-out backwards;
+  }
+
+  @keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-strong);
+    border-color: var(--pink-medium);
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .card:hover::after { opacity: 1; }
+
+  .card-image { position: relative; background: var(--pink-soft); overflow: hidden; }
+  .card-image img {
+    width: 100%; height: 240px; object-fit: cover; display: block;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .card:hover .card-image img { transform: scale(1.08); }
+
+  .card-image .badge {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--pink-dark);
+    padding: 0.3rem 0.7rem; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 700;
+    box-shadow: 0 2px 10px rgba(236, 64, 122, 0.2);
+    backdrop-filter: blur(5px);
+  }
+
+  .card-image::before {
+    content: '💕';
+    position: absolute;
+    top: 12px; left: 12px;
+    font-size: 1.3rem;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s;
+    z-index: 2;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+  }
+  .card:hover .card-image::before {
+    opacity: 1;
+    transform: scale(1);
+    animation: heartBeat 1s ease-in-out infinite;
+  }
+
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.15); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.1); }
+  }
+
+  .card-body { padding: 1.2rem; flex: 1; display: flex; flex-direction: column; }
+  .card-body h3 {
+    margin-bottom: 0.5rem; font-size: 1.1rem;
+    color: var(--black); font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .card-body .desc {
+    color: var(--gray); font-size: 0.9rem; margin-bottom: 0.8rem; flex: 1;
+    line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .price {
+    color: var(--pink-dark);
+    font-weight: 800; font-size: 1.35rem;
+    letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .price::before {
+    content: '✨';
+    font-size: 0.9rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.15); }
+  }
+
+  .card-hint {
+    font-size: 0.8rem; color: var(--pink-accent); margin-top: 0.7rem;
+    display: flex; align-items: center; gap: 0.3rem;
+    font-weight: 600;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .card:hover .card-hint { opacity: 1; }
+
+  /* ============ MODALES ============ */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(30, 20, 30, 0.6);
+    display: none; justify-content: center; align-items: center;
+    z-index: 200; padding: 1rem;
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.25s;
+  }
+  .modal-overlay.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--white); border-radius: 20px; padding: 2rem;
+    width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+    box-shadow: var(--shadow-strong);
+    animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(248, 187, 208, 0.4);
+    position: relative;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .modal h2 {
+    margin-bottom: 1.4rem; color: var(--black);
+    font-size: 1.35rem; font-weight: 700;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label {
+    display: block; margin-bottom: 0.4rem; font-weight: 600;
+    font-size: 0.9rem; color: var(--black);
+  }
+  .form-group input, .form-group textarea {
+    width: 100%; padding: 0.8rem 1rem;
+    border: 1.5px solid var(--pink-soft);
+    border-radius: 12px; font-size: 0.95rem;
+    transition: all 0.2s;
+    font-family: inherit;
+    background: #fefeff;
+    color: var(--black);
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--pink-accent);
+    box-shadow: 0 0 0 4px rgba(236, 64, 122, 0.1);
+    background: white;
+  }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 1.4rem; }
+
+  /* ============ DETALLE DEL PRODUCTO ============ */
+  .detail-modal-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 920px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-modal {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    box-shadow: var(--shadow-strong);
+    animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(248, 187, 208, 0.4);
+  }
+
+  .detail-close {
+    position: absolute; top: -14px; right: -14px; z-index: 10;
+    background: white; color: var(--black); border: none;
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    font-size: 24px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px rgba(236, 64, 122, 0.35);
+    line-height: 1; padding: 0; padding-bottom: 3px;
+    border: 2px solid var(--pink-soft);
+  }
+  .detail-close:hover {
+    background: var(--pink-accent); color: white;
+    transform: scale(1.15) rotate(90deg);
+    box-shadow: 0 6px 20px rgba(236, 64, 122, 0.5);
+  }
+
+  .detail-content {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 0;
+    max-height: 90vh; overflow: hidden;
+  }
+
+  .detail-gallery {
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+    display: flex; flex-direction: column;
+    min-height: 400px; position: relative;
+  }
+  .detail-main-image {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative; min-height: 350px;
+  }
+  .detail-main-image img {
+    max-width: 100%; max-height: 100%; object-fit: contain;
+    display: block;
+    animation: imgFadeIn 0.4s ease-out;
+  }
+  @keyframes imgFadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .detail-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.95); color: var(--pink-dark); border: none;
+    width: 46px; height: 46px; border-radius: 50%; cursor: pointer;
+    font-size: 24px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s;
+    box-shadow: 0 4px 14px rgba(194, 24, 91, 0.25);
+    font-weight: 700;
+  }
+  .detail-nav:hover {
+    background: var(--pink-accent); color: white;
+    transform: translateY(-50%) scale(1.1);
+  }
+  .detail-nav.prev { left: 15px; }
+  .detail-nav.next { right: 15px; }
+
+  .detail-counter {
+    position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+    background: rgba(255,255,255,0.95); color: var(--pink-dark);
+    padding: 0.35rem 0.9rem; border-radius: 20px;
+    font-size: 0.8rem; font-weight: 700;
+    box-shadow: 0 2px 10px rgba(194, 24, 91, 0.2);
+  }
+
+  .detail-thumbs {
+    display: flex; gap: 0.5rem; padding: 0.8rem;
+    overflow-x: auto;
+    background: rgba(255,255,255,0.6);
+    border-top: 1px solid rgba(248, 187, 208, 0.5);
+  }
+  .detail-thumbs img {
+    width: 62px; height: 62px; object-fit: cover; border-radius: 10px;
+    cursor: pointer; opacity: 0.5; transition: all 0.25s; flex-shrink: 0;
+    border: 2.5px solid transparent;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .detail-thumbs img:hover { opacity: 0.85; transform: translateY(-2px); }
+  .detail-thumbs img.active {
+    opacity: 1;
+    border-color: var(--pink-accent);
+    box-shadow: 0 4px 12px rgba(236, 64, 122, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .detail-info {
+    padding: 2rem 1.8rem; overflow-y: auto;
+    display: flex; flex-direction: column;
+    background: white;
+  }
+  .detail-info h2 {
+    font-size: 1.65rem; margin-bottom: 0.8rem;
+    color: var(--black); line-height: 1.2; font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .detail-info .detail-price {
+    font-size: 2.1rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--pink-accent) 0%, var(--pink-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.6rem;
+    letter-spacing: -1px;
+  }
+  .detail-info .detail-desc-title {
+    font-size: 0.8rem; font-weight: 800;
+    color: var(--pink-dark);
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .detail-info .detail-desc-title::before {
+    content: '💕';
+    font-size: 1rem;
+  }
+  .detail-info .detail-desc {
+    color: #2d2d2d; line-height: 1.65; font-size: 0.95rem;
+    margin-bottom: 1.5rem; white-space: pre-wrap;
+  }
+
+  .detail-admin-actions {
+    display: flex; gap: 0.6rem; margin-top: auto; padding-top: 1.5rem;
+    border-top: 1px solid var(--pink-soft);
+  }
+  .detail-admin-actions button { flex: 1; padding: 0.75rem; }
+
+  .image-preview { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+  .image-preview .thumb {
+    position: relative; width: 80px; height: 80px;
+    border-radius: 12px; overflow: hidden;
+    border: 2px solid var(--pink-soft);
+    transition: all 0.2s;
+  }
+  .image-preview .thumb:hover { transform: scale(1.05); border-color: var(--pink-accent); }
+  .image-preview .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .image-preview .thumb button {
+    position: absolute; top: 3px; right: 3px;
+    background: var(--pink-accent);
+    color: white; border: none; border-radius: 50%;
+    width: 22px; height: 22px; cursor: pointer;
+    font-size: 14px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(236, 64, 122, 0.4);
+  }
+  .image-preview .thumb button:hover {
+    background: var(--pink-dark);
+    transform: scale(1.15) rotate(90deg);
+  }
+
+  .empty {
+    text-align: center; padding: 5rem 2rem; color: var(--gray);
+    grid-column: 1 / -1;
+  }
+  .empty h3 {
+    font-size: 1.4rem; margin-bottom: 0.6rem;
+    color: var(--pink-dark); font-weight: 700;
+  }
+  .empty::before {
+    content: '💝';
+    display: block; font-size: 3.5rem;
+    margin-bottom: 1rem;
+    animation: gentleFloat 3s ease-in-out infinite;
+  }
+
+  .hidden { display: none !important; }
+
+  .loading {
+    text-align: center; padding: 4rem; color: var(--pink-dark);
+    grid-column: 1 / -1;
+  }
+  .spinner {
+    display: inline-block; width: 44px; height: 44px;
+    border: 4px solid var(--pink-soft);
+    border-top-color: var(--pink-accent);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--black);
+    color: white; padding: 0.9rem 1.6rem;
+    border-radius: 50px; font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 300; opacity: 0;
+    font-size: 0.9rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  .toast.success { background: linear-gradient(135deg, var(--pink-accent), var(--pink-dark)); }
+  .toast.success::before { content: '✨'; }
+  .toast.error::before { content: '⚠️'; }
+
+  .user-badge {
+    background: linear-gradient(135deg, var(--pink-accent), var(--pink-dark));
+    color: white; padding: 0.45rem 0.9rem;
+    border-radius: 50px; font-size: 0.8rem; font-weight: 700;
+    display: flex; align-items: center; gap: 0.4rem;
+    box-shadow: 0 3px 10px rgba(236, 64, 122, 0.3);
+    animation: gentleFloat 3s ease-in-out infinite;
+  }
+
+  @media (max-width: 768px) {
+    .detail-content { grid-template-columns: 1fr; max-height: 95vh; }
+    .detail-gallery { min-height: 300px; }
+    .detail-main-image { min-height: 250px; }
+    .detail-info { padding: 1.5rem 1.2rem; }
+    .detail-info h2 { font-size: 1.3rem; }
+    .detail-info .detail-price { font-size: 1.7rem; }
+    .detail-nav { width: 40px; height: 40px; font-size: 20px; }
+    .detail-close { top: 10px; right: 10px; }
+    .banner-text { font-size: 0.75rem; letter-spacing: 0.5px; }
+    .banner { padding: 0.7rem 0.8rem; }
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 0.9rem 1rem; }
+    header h1 { font-size: 1.1rem; }
+    .btn { padding: 0.55rem 1rem; font-size: 0.85rem; }
+    .container { margin: 1.2rem auto; }
+    .grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .card-image img { height: 200px; }
+    .modal { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Partículas flotantes -->
+<div class="particles" id="particles"></div>
+
+<header>
+  <h1>🌸 Bags VG 💕</h1>
+  <div class="actions" id="headerActions">
+    <span id="userBadge" class="user-badge hidden">👑 Admin</span>
+    <button id="loginBtn" class="btn">Iniciar sesión</button>
+    <button id="addBtn" class="btn btn-success hidden">+ Agregar artículo</button>
+    <button id="logoutBtn" class="btn btn-secondary hidden">Cerrar sesión</button>
+  </div>
+</header>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-text">
+    <span class="star">✨</span>
+    Productos totalmente originales y nuevos de importación
+    <span class="star">✨</span>
+    <span class="star">💎</span>
+    <span class="star">✨</span>
+  </div>
+</div>
+
+<main class="container">
+  <div id="productsGrid" class="grid">
+    <div class="loading"><div class="spinner"></div><p style="margin-top:1rem">Cargando catálogo...</p></div>
+  </div>
+</main>
+
+<!-- Modal Login -->
+<div id="loginModal" class="modal-overlay">
+  <div class="modal">
+    <h2>💕 Acceso Administrador</h2>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="loginEmail" placeholder="tu@correo.com">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" data-close="loginModal">Cancelar</button>
+      <button class="btn" id="doLogin">Entrar ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detalle Producto -->
+<div id="detailModal" class="modal-overlay">
+  <div class="detail-modal-wrapper">
+    <button class="detail-close" id="detailCloseBtn" type="button">×</button>
+    <div class="detail-modal">
+      <div class="detail-content">
+        <div class="detail-gallery">
+          <div class="detail-main-image">
+            <img id="detailImg" src="" alt="">
+            <button class="detail-nav prev" id="detailPrev" type="button">‹</button>
+            <button class="detail-nav next" id="detailNext" type="button">›</button>
+            <div class="detail-counter hidden" id="detailCounter"></div>
+          </div>
+          <div class="detail-thumbs hidden" id="detailThumbs"></div>
+        </div>
+        <div class="detail-info">
+          <h2 id="detailName"></h2>
+          <div class="detail-price" id="detailPrice"></div>
+          <div class="detail-desc-title">Descripción</div>
+          <p class="detail-desc" id="detailDesc"></p>
+          <div class="detail-admin-actions hidden" id="detailAdminActions">
+            <button class="btn" id="detailEditBtn" type="button">✏️ Editar</button>
+            <button class="btn btn-danger" id="detailDeleteBtn" type="button">🗑️ Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Producto (form) -->
+<div id="productModal" class="modal-overlay">
+  <div class="modal">
+    <h2 id="productModalTitle">✨ Nuevo artículo</h2>
+    <input type="hidden" id="productId">
+    <div class="form-group">
+      <label>Nombre *</label>
+      <input type="text" id="productName" placeholder="Ej: Bolso de cuero rosa">
+    </div>
+    <div class="form-group">
+      <label>Descripción</label>
+      <textarea id="productDesc" placeholder="Describe el artículo..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Precio (MXN) *</label>
+      <input type="number" id="productPrice" min="0" step="0.01" placeholder="0.00">
+    </div>
+    <div class="form-group">
+      <label>Imágenes</label>
+      <input type="file" id="productImages" accept="image/*" multiple>
+      <div class="image-preview" id="imagePreview"></div>
+      <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.5rem;">
+        💡 Puedes seleccionar varias imágenes a la vez
+      </p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" data-close="productModal">Cancelar</button>
+      <button class="btn btn-success" id="saveProduct">Guardar 💖</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+/* ============ IMPORTS ============ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, collection, onSnapshot,
+  addDoc, updateDoc, deleteDoc, doc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+/* ============ CONFIG ============ */
+const firebaseConfig = {
+  apiKey: "AIzaSyApVV4hthIXW306cHlXyDkKfclPZyvQiI0",
+  authDomain: "bolsosimp.firebaseapp.com",
+  projectId: "bolsosimp",
+  storageBucket: "bolsosimp.firebasestorage.app",
+  messagingSenderId: "663361804295",
+  appId: "1:663361804295:web:b9711f25aced08b815b2a2"
+};
+
+const CLOUDINARY_CLOUD = "digpisfx";
+const CLOUDINARY_PRESET = "catalogo_unsigned";
+const ADMIN_EMAIL = "riverakevin493@gmail.com";
+
+/* ============ INIT ============ */
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+/* ============ ESTADO ============ */
+let products = [];
+let isAdmin = false;
+let currentImages = [];
+let loaded = false;
+
+let detailProduct = null;
+let detailImgIdx = 0;
+
+/* ============ UTILS ============ */
+function openModal(id) { document.getElementById(id).classList.add("active"); }
+function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+function escapeHTML(str) {
+  const div = document.createElement("div");
+  div.textContent = str || "";
+  return div.innerHTML;
+}
+function showToast(msg, type = "") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show " + type;
+  setTimeout(() => { t.className = "toast " + type; }, 3000);
+}
+
+/* ============ PARTÍCULAS DECORATIVAS ============ */
+function createParticles() {
+  const container = document.getElementById("particles");
+  const symbols = ["💕", "✨", "🌸", "💖", "🩷", "✿", "❀", "💗", "⭐", "🤍"];
+  const colors = ["#f8bbd0", "#fce4ec", "#ec407a", "#f48fb1", "#d4af7a"];
+
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    p.style.left = Math.random() * 100 + "%";
+    p.style.fontSize = (12 + Math.random() * 14) + "px";
+    p.style.animationDuration = (12 + Math.random() * 15) + "s";
+    p.style.animationDelay = (Math.random() * 15) + "s";
+    p.style.opacity = 0.6;
+    container.appendChild(p);
+  }
+
+  for (let i = 0; i < 25; i++) {
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top = Math.random() * 100 + "%";
+    s.style.animationDelay = (Math.random() * 3) + "s";
+    s.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+    if (Math.random() > 0.5) {
+      s.style.background = "#ec407a";
+    }
+    document.body.appendChild(s);
+  }
+}
+createParticles();
+
+/* ============ CLOUDINARY ============ */
+async function uploadToCloudinary(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_PRESET);
+  formData.append("folder", "productos");
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+    { method: "POST", body: formData }
+  );
+  if (!res.ok) throw new Error("Error subiendo imagen");
+  const data = await res.json();
+  return data.secure_url;
+}
+
+/* ============ RENDER GRID ============ */
+function renderProducts() {
+  const grid = document.getElementById("productsGrid");
+  if (!loaded) return;
+
+  if (products.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <h3>No hay artículos aún</h3>
+        <p>${isAdmin ? 'Usa el botón "+ Agregar artículo" para empezar' : 'Vuelve pronto para ver novedades'}</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = "";
+
+  products.forEach((p, index) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.animationDelay = (index * 0.05) + "s";
+
+    const hasImages = p.images && p.images.length > 0;
+    const imgSrc = hasImages ? p.images[0] : "https://via.placeholder.com/400x300/fce4ec/ec407a?text=Sin+imagen";
+    const imgCount = hasImages && p.images.length > 1 ? `<div class="badge">📷 ${p.images.length}</div>` : "";
+
+    card.innerHTML = `
+      <div class="card-image">
+        <img src="${imgSrc}" alt="${escapeHTML(p.name)}" loading="lazy">
+        ${imgCount}
+      </div>
+      <div class="card-body">
+        <h3>${escapeHTML(p.name)}</h3>
+        <p class="desc">${escapeHTML(p.description || "Sin descripción")}</p>
+        <div class="price">$${Number(p.price || 0).toFixed(2)} MXN</div>
+        <div class="card-hint">Toca para ver más →</div>
+      </div>
+    `;
+
+    card.onclick = () => openDetail(p.id);
+    grid.appendChild(card);
+  });
+}
+
+/* ============ MODAL DETALLE ============ */
+function openDetail(productId) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+
+  detailProduct = p;
+  detailImgIdx = 0;
+
+  document.getElementById("detailName").textContent = p.name;
+  document.getElementById("detailPrice").textContent = `$${Number(p.price || 0).toFixed(2)} MXN`;
+  document.getElementById("detailDesc").textContent = p.description || "Sin descripción";
+
+  const hasImages = p.images && p.images.length > 0;
+
+  if (hasImages) {
+    updateDetailImage();
+    renderDetailThumbs();
+
+    const showNav = p.images.length > 1;
+    document.getElementById("detailPrev").classList.toggle("hidden", !showNav);
+    document.getElementById("detailNext").classList.toggle("hidden", !showNav);
+    document.getElementById("detailCounter").classList.toggle("hidden", !showNav);
+  } else {
+    document.getElementById("detailImg").src = "https://via.placeholder.com/800x600/fce4ec/ec407a?text=Sin+imagen";
+    document.getElementById("detailThumbs").classList.add("hidden");
+    document.getElementById("detailPrev").classList.add("hidden");
+    document.getElementById("detailNext").classList.add("hidden");
+    document.getElementById("detailCounter").classList.add("hidden");
+  }
+
+  const adminActions = document.getElementById("detailAdminActions");
+  if (isAdmin) {
+    adminActions.classList.remove("hidden");
+  } else {
+    adminActions.classList.add("hidden");
+  }
+
+  openModal("detailModal");
+}
+
+function updateDetailImage() {
+  if (!detailProduct || !detailProduct.images) return;
+  const img = document.getElementById("detailImg");
+  img.src = detailProduct.images[detailImgIdx];
+
+  const counter = document.getElementById("detailCounter");
+  counter.textContent = `${detailImgIdx + 1} / ${detailProduct.images.length}`;
+
+  document.querySelectorAll("#detailThumbs img").forEach((t, i) => {
+    t.classList.toggle("active", i === detailImgIdx);
+  });
+}
+
+function renderDetailThumbs() {
+  const cont = document.getElementById("detailThumbs");
+  if (!detailProduct || !detailProduct.images || detailProduct.images.length <= 1) {
+    cont.classList.add("hidden");
+    return;
+  }
+  cont.classList.remove("hidden");
+  cont.innerHTML = "";
+  detailProduct.images.forEach((url, i) => {
+    const img = document.createElement("img");
+    img.src = url;
+    img.className = i === 0 ? "active" : "";
+    img.onclick = (e) => {
+      e.stopPropagation();
+      detailImgIdx = i;
+      updateDetailImage();
+    };
+    cont.appendChild(img);
+  });
+}
+
+/* ============ EVENTOS DEL DETALLE ============ */
+document.getElementById("detailCloseBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  closeModal("detailModal");
+});
+
+document.getElementById("detailPrev").addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!detailProduct || !detailProduct.images) return;
+  detailImgIdx = (detailImgIdx - 1 + detailProduct.images.length) % detailProduct.images.length;
+  updateDetailImage();
+});
+
+document.getElementById("detailNext").addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!detailProduct || !detailProduct.images) return;
+  detailImgIdx = (detailImgIdx + 1) % detailProduct.images.length;
+  updateDetailImage();
+});
+
+document.getElementById("detailEditBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!detailProduct) return;
+  const id = detailProduct.id;
+  closeModal("detailModal");
+  editProduct(id);
+});
+
+document.getElementById("detailDeleteBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!detailProduct) return;
+  const id = detailProduct.id;
+  closeModal("detailModal");
+  deleteProduct(id);
+});
+
+document.querySelectorAll("[data-close]").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal(btn.dataset.close);
+  });
+});
+
+document.addEventListener("keydown", (e) => {
+  const dm = document.getElementById("detailModal");
+  if (!dm.classList.contains("active")) return;
+  if (e.key === "ArrowLeft") document.getElementById("detailPrev").click();
+  if (e.key === "ArrowRight") document.getElementById("detailNext").click();
+  if (e.key === "Escape") closeModal("detailModal");
+});
+
+/* ============ AUTH ============ */
+document.getElementById("loginBtn").addEventListener("click", () => {
+  document.getElementById("loginEmail").value = "";
+  document.getElementById("loginPass").value = "";
+  openModal("loginModal");
+});
+
+document.getElementById("doLogin").addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value.trim();
+  const pass = document.getElementById("loginPass").value;
+  if (!email || !pass) return showToast("Completa ambos campos", "error");
+
+  const btn = document.getElementById("doLogin");
+  try {
+    btn.disabled = true; btn.textContent = "Entrando...";
+    await signInWithEmailAndPassword(auth, email, pass);
+    closeModal("loginModal");
+    showToast("¡Bienvenido!", "success");
+  } catch (err) {
+    console.error(err);
+    showToast("Credenciales incorrectas", "error");
+  } finally {
+    btn.disabled = false; btn.textContent = "Entrar ✨";
+  }
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  if (!confirm("¿Cerrar sesión?")) return;
+  await signOut(auth);
+  showToast("Sesión cerrada", "success");
+});
+
+document.getElementById("loginPass").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") document.getElementById("doLogin").click();
+});
+
+onAuthStateChanged(auth, (user) => {
+  isAdmin = !!user && user.email === ADMIN_EMAIL;
+
+  document.getElementById("loginBtn").classList.toggle("hidden", isAdmin);
+  document.getElementById("userBadge").classList.toggle("hidden", !isAdmin);
+  document.getElementById("addBtn").classList.toggle("hidden", !isAdmin);
+  document.getElementById("logoutBtn").classList.toggle("hidden", !isAdmin);
+
+  renderProducts();
+});
+
+/* ============ CRUD PRODUCTOS ============ */
+document.getElementById("addBtn").addEventListener("click", () => {
+  document.getElementById("productModalTitle").textContent = "✨ Nuevo artículo";
+  document.getElementById("productId").value = "";
+  document.getElementById("productName").value = "";
+  document.getElementById("productDesc").value = "";
+  document.getElementById("productPrice").value = "";
+  document.getElementById("productImages").value = "";
+  currentImages = [];
+  renderImagePreview();
+  openModal("productModal");
+});
+
+function editProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById("productModalTitle").textContent = "✏️ Editar artículo";
+  document.getElementById("productId").value = p.id;
+  document.getElementById("productName").value = p.name;
+  document.getElementById("productDesc").value = p.description || "";
+  document.getElementById("productPrice").value = p.price;
+  currentImages = [...(p.images || [])];
+  renderImagePreview();
+  openModal("productModal");
+}
+
+async function deleteProduct(id) {
+  if (!confirm("¿Eliminar este artículo? 💔")) return;
+  try {
+    await deleteDoc(doc(db, "productos", id));
+    showToast("Artículo eliminado", "success");
+  } catch (err) {
+    console.error(err);
+    showToast("Error al eliminar", "error");
+  }
+}
+
+document.getElementById("productImages").addEventListener("change", async (e) => {
+  const files = Array.from(e.target.files);
+  const btn = document.getElementById("saveProduct");
+  const originalText = btn.textContent;
+
+  for (const file of files) {
+    btn.disabled = true;
+    btn.textContent = "Subiendo...";
+    try {
+      const url = await uploadToCloudinary(file);
+      currentImages.push(url);
+      renderImagePreview();
+    } catch (err) {
+      console.error(err);
+      showToast("Error subiendo " + file.name, "error");
+    }
+  }
+  btn.disabled = false;
+  btn.textContent = originalText;
+  e.target.value = "";
+});
+
+function renderImagePreview() {
+  const cont = document.getElementById("imagePreview");
+  cont.innerHTML = "";
+  currentImages.forEach((img, i) => {
+    const div = document.createElement("div");
+    div.className = "thumb";
+    div.innerHTML = `<img src="${img}"><button type="button">×</button>`;
+    div.querySelector("button").addEventListener("click", () => {
+      currentImages.splice(i, 1);
+      renderImagePreview();
+    });
+    cont.appendChild(div);
+  });
+}
+
+document.getElementById("saveProduct").addEventListener("click", async () => {
+  const id = document.getElementById("productId").value;
+  const name = document.getElementById("productName").value.trim();
+  const description = document.getElementById("productDesc").value.trim();
+  const price = parseFloat(document.getElementById("productPrice").value);
+
+  if (!name) return showToast("El nombre es obligatorio", "error");
+  if (isNaN(price) || price < 0) return showToast("Precio inválido", "error");
+
+  const btn = document.getElementById("saveProduct");
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = "Guardando...";
+
+  const data = { name, description, price, images: [...currentImages] };
+
+  try {
+    if (id) {
+      await updateDoc(doc(db, "productos", id), data);
+      showToast("Artículo actualizado", "success");
+    } else {
+      await addDoc(collection(db, "productos"), { ...data, createdAt: serverTimestamp() });
+      showToast("Artículo agregado", "success");
+    }
+    closeModal("productModal");
+  } catch (err) {
+    console.error(err);
+    showToast("Error guardando", "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
+
+/* ============ TIEMPO REAL ============ */
+onSnapshot(collection(db, "productos"), (snap) => {
+  products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  products.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+  loaded = true;
+  renderProducts();
+
+  const dm = document.getElementById("detailModal");
+  if (dm.classList.contains("active") && detailProduct) {
+    const updated = products.find(p => p.id === detailProduct.id);
+    if (updated) {
+      detailProduct = updated;
+      document.getElementById("detailName").textContent = updated.name;
+      document.getElementById("detailPrice").textContent = `$${Number(updated.price || 0).toFixed(2)} MXN`;
+      document.getElementById("detailDesc").textContent = updated.description || "Sin descripción";
+    } else {
+      closeModal("detailModal");
+    }
+  }
+}, (err) => {
+  console.error(err);
+  document.getElementById("productsGrid").innerHTML =
+    `<div class="empty"><h3>⚠️ Error de conexión</h3><p>Revisa tu conexión o las reglas de Firestore</p></div>`;
+});
+
+/* ============ CERRAR MODALES AL CLICK FUERA ============ */
+document.querySelectorAll(".modal-overlay").forEach(ov => {
+  ov.addEventListener("click", (e) => {
+    if (e.target === ov) closeModal(ov.id);
+  });
+});
+</script>
+</body>
+</html>   
